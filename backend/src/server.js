@@ -81,29 +81,18 @@ const initServer = async () => {
 
 initServer();
 
-// CORS configuration
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'http://localhost:3000',
-  process.env.CLIENT_URL
-].filter(Boolean);
-
+// CORS configuration - allow all origins dynamically to support Vercel preview & production URLs
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, Postman)
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-        return callback(null, true);
-      }
-      return callback(new Error('CORS policy: This origin is not allowed'));
-    },
+    origin: true,
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept']
   })
 );
+
+// Handle preflight OPTIONS requests
+app.options('*', cors());
 
 // Body parser
 app.use(express.json());

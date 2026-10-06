@@ -4,11 +4,18 @@
   "description": "Backend API for LearnFlow Course Learning and Quiz Platform",
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev": "node --watch src/server.js",
+    "start": "node api.js && node src/server.js",
+    "dev": "node api.js && node --watch src/server.js",
     "seed": "node src/seeds/seed.js"
   },
-  "keywords": ["edtech", "courses", "learning", "quiz", "express", "mongodb"],
+  "keywords": [
+    "edtech",
+    "courses",
+    "learning",
+    "quiz",
+    "express",
+    "mongodb"
+  ],
   "author": "LearnFlow Team",
   "license": "ISC",
   "dependencies": {
