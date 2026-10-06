@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -126,6 +127,19 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/quiz', quizRoutes);
+
+// Serve frontend static build in production
+if (process.env.NODE_ENV === 'production') {
+  const distPath = path.join(__dirname, '../../frontend/dist');
+  app.use(express.static(distPath));
+
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.resolve(distPath, 'index.html'));
+  });
+}
 
 // Error handlers
 app.use(notFound);
